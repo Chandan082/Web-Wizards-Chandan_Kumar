@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebWizards | Discover Local Events</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables for Brand Consistency */
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --bg: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 8%;
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: #111827; }
+        .logo span { color: var(--primary); }
+
+        .nav-actions { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; }
+        
+        .btn-signin {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-signin:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        /* Hero & Search Section */
+        .hero {
+            padding: 5rem 8% 3rem;
+            text-align: center;
+            background: linear-gradient(180deg, #fff 0%, #f1f5f9 100%);
+        }
+
+        .hero h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 1rem; }
+        .hero p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2.5rem; }
+
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            background: #fff;
+            padding: 0.6rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-container input {
+            flex: 1;
+            border: none;
+            padding: 0 1.2rem;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Event Section */
+        .content-section { padding: 4rem 8%; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
+        
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Ticket Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px rgba(0,0,0,0.08); }
+
+        .card-img { height: 200px; background: #cbd5e1; position: relative; }
+        .badge {
+            position: absolute; top: 1rem; left: 1rem;
+            background: rgba(255,255,255,0.9);
+            padding: 0.3rem 0.7rem; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 700; color: var(--primary);
+        }
+
+        .card-body { padding: 1.5rem; }
+        .card-date { color: var(--primary); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .card-loc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 5px; }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 1rem; border-top: 1px solid #f1f5f9;
+        }
+        .price { font-weight: 800; font-size: 1.1rem; }
+        .btn-book {
+            background: #1e293b;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .btn-book:hover { background: var(--primary); }
+
+        /* Mobile View */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-actions .nav-link { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">Web<span>Wizards</span></a>
+        <div class="nav-actions">
+            <a href="#" class="nav-link">Explore</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="login.html" class="btn-signin">Sign In</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Find your next <br><span>favorite experience.</span></h1>
+        <p>Book tickets for college fests, pop-up shops, and local community events.</p>
+        
+        <div class="search-container">
+            <svg width="20" height="20" style="margin-left: 10px; color: #94a3b8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="mainSearch" placeholder="Search by name, location, or fest type...">
+            <button class="search-btn">Search</button>
+        </div>
+    </header>
+
+    <main class="content-section">
+        <div class="section-header">
+            <div>
+                <h2 style="font-size: 1.8rem;">Upcoming Events</h2>
+                <p style="color: var(--text-muted);">Hand-picked local experiences near you</p>
+            </div>
+            <a href="#" class="link" style="color: var(--primary); font-weight: 600; text-decoration: none;">View All →</a>
+        </div>
+
+        <div class="event-grid">
+            <div class="card">
+                <div class="card-img" style="background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500&q=80') center/cover;">
+                    <span class="badge">COLLEGE FEST</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-date">SAT, OCT 25 • 10:00 AM</p>
+                    <h3 class="card-title">Technovanza 2026</h3>
+                    <p class="card-loc">📍 Central Institute of Tech</p>
+                    <div class="card-footer">
+                        <span class="price">12.00</span>
+                        <a href="Signin.html" class="btn-book">Book Ticket</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img" style="background: url('https://images.unsplash.com/photo-1531058021387-46363bb89230?auto=format&fit=crop&w=500&q=80') center/cover;">
+                    <span class="badge">COMMUNITY</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-date">SUN, OCT 26 • 05:00 PM</p>
+                    <h3 class="card-title">Community Food Fair</h3>
+                    <p class="card-loc">📍 Riverside Park</p>
+                    <div class="card-footer">
+                        <span class="price">Free</span>
+                        <a href="Signin.html" class="btn-book">Get Pass</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img" style="background: url('https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=500&q=80') center/cover;">
+                    <span class="badge">POP-UP</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-date">FRI, OCT 31 • 08:00 PM</p>
+                    <h3 class="card-title">Neon Night Market</h3>
+                    <p class="card-loc">📍 District 5 Studios</p>
+                    <div class="card-footer">
+                        <span class="price">5.00</span>
+                        <a href="Signin.html" class="btn-book">Book Ticket</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simple Search Filter Logic
+        document.getElementById('mainSearch').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                let title = card.querySelector('.card-title').innerText.toLowerCase();
+                let loc = card.querySelector('.card-loc').innerText.toLowerCase();
+                if(title.includes(filter) || loc.includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
