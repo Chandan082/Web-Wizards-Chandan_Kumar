@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebWizards | Auth Portal</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background-color: #f3f4f6; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            color: #1f2937;
+            padding: 20px;
+        }
+
+        .auth-card { 
+            background: #ffffff; 
+            width: 100%; 
+            max-width: 440px; 
+            padding: 2.5rem; 
+            border-radius: 24px; 
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06); 
+            position: relative;
+        }
+
+        /* Back to Home Link */
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-home:hover {
+            color: #3b82f6;
+        }
+
+        /* Branding */
+        .logo-section { text-align: center; margin-bottom: 1.5rem; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: #111827; }
+        .logo span { color: #3b82f6; }
+        
+        h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+        .subtitle { color: #6b7280; font-size: 0.9rem; margin-bottom: 2rem; text-align: center; }
+
+        /* Form Visibility Logic */
+        .auth-form { display: none; text-align: left; }
+        .auth-form.active { display: block; }
+
+        /* Inputs & Labels */
+        .input-group { margin-bottom: 1.25rem; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: #374151; }
+        input { 
+            width: 100%; 
+            padding: 0.85rem 1rem; 
+            border-radius: 12px; 
+            border: 1px solid #d1d5db; 
+            outline: none; 
+            background-color: #f9fafb; 
+            font-size: 1rem;
+            transition: all 0.2s; 
+        }
+        input:focus { border-color: #3b82f6; background-color: #fff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+
+        /* Buttons */
+        .btn-primary { 
+            width: 100%; 
+            background: #3b82f6; 
+            color: white; 
+            padding: 1rem; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            font-size: 1rem;
+            cursor: pointer; 
+            margin-top: 0.5rem; 
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #2563eb; }
+
+        .link { color: #3b82f6; text-decoration: none; font-weight: 600; cursor: pointer; }
+        .link:hover { text-decoration: underline; }
+
+        /* Google Integration Styling */
+        .divider { display: flex; align-items: center; margin: 1.5rem 0; color: #9ca3af; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e5e7eb; }
+        .divider span { padding: 0 12px; }
+
+        #google-btn-wrapper { display: flex; justify-content: center; margin-top: 0.5rem; }
+
+        .footer-text { margin-top: 2rem; font-size: 0.9rem; color: #4b5563; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <a href="index.html" class="back-home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+
+        <div class="logo-section">
+            <div class="logo">Web<span>Wizards</span></div>
+        </div>
+
+        <div id="signin-section" class="auth-form active">
+            <h2>Welcome back</h2>
+            <p class="subtitle">Log in to manage your tickets and events</p>
+            <form>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="name@company.com" required>
+                </div>
+                <div class="input-group">
+                    <div style="display:flex; justify-content:space-between">
+                        <label>Password</label>
+                        <span class="link" style="font-size:0.85rem" onclick="showForm('forgot')">Forgot?</span>
+                    </div>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+
+            <div class="divider"><span>or continue with</span></div>
+            
+            <div id="google-btn-wrapper">
+                <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+            </div>
+
+            <p class="footer-text">New here? <span class="link" onclick="showForm('signup')">Create an account</span></p>
+        </div>
+
+        <div id="signup-section" class="auth-form">
+            <h2>Join WebWizards</h2>
+            <p class="subtitle">Discover local fests and community events</p>
+            <form>
+                <div class="input-group"><label>Full Name</label><input type="text" placeholder="John Doe"></div>
+                <div class="input-group"><label>Email Address</label><input type="email" placeholder="name@company.com"></div>
+                <div class="input-group"><label>Password</label><input type="password" placeholder="Min. 8 characters"></div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            <p class="footer-text">Already have an account? <span class="link" onclick="showForm('signin')">Sign In</span></p>
+        </div>
+
+        <div id="forgot-section" class="auth-form">
+            <h2>Reset Password</h2>
+            <p class="subtitle">We'll send an OTP to your email or phone</p>
+            <form>
+                <div class="input-group">
+                    <label>Email or Mobile Number</label>
+                    <input type="text" placeholder="Email or +1 (555) 000-0000" required>
+                </div>
+                <button type="submit" class="btn-primary">Send Reset Link</button>
+            </form>
+            <p class="footer-text"><span class="link" onclick="showForm('signin')">Back to Sign In</span></p>
+        </div>
+    </div>
+
+    <div id="g_id_onload"
+         data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+
+    <script>
+        // Simple function to switch forms
+        function showForm(formId) {
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(formId + '-section').classList.add('active');
+        }
+
+        // Handle Google Login Response
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            alert("Success! Google login token received.");
+        }
+    </script>
+</body>
+</html>
