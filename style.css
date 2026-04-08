@@ -1,0 +1,123 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Body styling */
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #f0f4ff, #ffffff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login Box */
+.login-box {
+    background: #ffffff;
+    padding: 40px 35px;
+    width: 350px;
+    border-radius: 15px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* Title */
+.login-box h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+/* Input group */
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.input-group label {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.3s;
+    background: #fff;
+    padding: 0 5px;
+}
+
+/* Focus effect */
+.input-group input:focus {
+    border-color: #6c8cff;
+    box-shadow: 0 0 5px rgba(108, 140, 255, 0.3);
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -8px;
+    font-size: 12px;
+    color: #6c8cff;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #6c8cff;
+    color: white;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(108, 140, 255, 0.3);
+}
+
+button:hover {
+    background: #5a78e6;
+    box-shadow: 0 8px 20px rgba(108, 140, 255, 0.4);
+}
+
+/* Extra text */
+.extra {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #666;
+}
+
+.extra a {
+    color: #6c8cff;
+    text-decoration: none;
+}
+
+.extra a:hover {
+    text-decoration: underline;
+}
