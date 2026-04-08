@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = `${window.location.origin}/api`;
 const TOKEN_KEY = "ticket_booking_token";
 const PENDING_BOOKING_KEY = "ticket_booking_pending";
 const LAST_TICKET_KEY = "ticket_booking_last_ticket";

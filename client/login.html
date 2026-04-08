@@ -524,7 +524,7 @@
         }
 
         // Step 1: Connect Sign In form to backend API.
-        const API_BASE = "http://localhost:5000/api";
+        const API_BASE = `${window.location.origin}/api`;
         const signinForm = document.getElementById("signin-form");
         const signupForm = document.getElementById("signup-form");
         const forgotForm = document.getElementById("forgot-form");
@@ -566,7 +566,7 @@
                     window.location.href = "./booking.html";
                 } catch (error) {
                     signinMessage.textContent = error.message.includes("fetch")
-                        ? "Cannot reach server. Run node server.js and open http://localhost:5000"
+                        ? "Cannot reach server. Please make sure backend is running."
                         : error.message;
                 }
             });
@@ -601,7 +601,7 @@
                     signinMessage.textContent = "Registration successful. Please sign in.";
                 } catch (error) {
                     signupMessage.textContent = error.message.includes("fetch")
-                        ? "Cannot reach server. Run node server.js and open http://localhost:5000"
+                        ? "Cannot reach server. Please make sure backend is running."
                         : error.message;
                 }
             });
@@ -656,7 +656,7 @@
                     showForm("signin");
                 } catch (error) {
                     forgotMessage.textContent = error.message.includes("fetch")
-                        ? "Cannot reach server. Run node server.js and open http://localhost:5000"
+                        ? "Cannot reach server. Please make sure backend is running."
                         : error.message;
                 }
             });
