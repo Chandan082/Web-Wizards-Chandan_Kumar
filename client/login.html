@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebWizards | Discover Local Events</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables for Brand Consistency */
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --bg: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; position: relative; overflow-x: hidden; }
+
+        .moving-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            overflow: hidden;
+            background: #0f172a;
+        }
+        .moving-bg .lane {
+            position: absolute;
+            width: 200%;
+            height: 38%;
+            opacity: 0.2;
+            background-size: 420px 280px;
+            background-repeat: repeat;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            filter: saturate(1.1);
+        }
+        .moving-bg .lane-1 {
+            top: 0;
+            background-image:
+                linear-gradient(rgba(15,23,42,.45), rgba(15,23,42,.45)),
+                url('https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=1200&q=80');
+            animation-name: slideLeft;
+            animation-duration: 40s;
+        }
+        .moving-bg .lane-2 {
+            top: 31%;
+            background-image:
+                linear-gradient(rgba(15,23,42,.45), rgba(15,23,42,.45)),
+                url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80');
+            animation-name: slideRight;
+            animation-duration: 55s;
+        }
+        .moving-bg .lane-3 {
+            top: 62%;
+            height: 40%;
+            background-image:
+                linear-gradient(rgba(15,23,42,.45), rgba(15,23,42,.45)),
+                url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=80');
+            animation-name: slideLeft;
+            animation-duration: 65s;
+        }
+        @keyframes slideLeft {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        @keyframes slideRight {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(0); }
+        }
+
+        /* ==================== HOME PAGE STYLES ==================== */
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 8%;
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: #111827; }
+        .logo span { color: var(--primary); }
+
+        .nav-actions { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; }
+        
+        .btn-signin {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .btn-signin:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        /* Hero & Search Section */
+        .hero {
+            padding: 5rem 8% 3rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255,255,255,.93) 0%, rgba(241,245,249,.94) 100%);
+            position: relative;
+            backdrop-filter: blur(2px);
+        }
+
+        .hero h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 1rem; }
+        .hero p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2.5rem; }
+
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            background: #fff;
+            padding: 0.6rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-container input {
+            flex: 1;
+            border: none;
+            padding: 0 1.2rem;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Event Section */
+        .content-section { padding: 4rem 8%; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
+        
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Ticket Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px rgba(0,0,0,0.08); }
+
+        .card-img { height: 200px; background: #cbd5e1; position: relative; }
+        .badge {
+            position: absolute; top: 1rem; left: 1rem;
+            background: rgba(255,255,255,0.9);
+            padding: 0.3rem 0.7rem; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 700; color: var(--primary);
+        }
+
+        .card-body { padding: 1.5rem; }
+        .card-date { color: var(--primary); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .card-loc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 5px; }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 1rem; border-top: 1px solid #f1f5f9;
+        }
+        .price { font-weight: 800; font-size: 1.1rem; }
+        .btn-book {
+            background: #1e293b;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-book:hover { background: var(--primary); }
+
+        /* Mobile View */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-actions .nav-link { display: none; }
+        }
+
+        /* ==================== AUTH PAGE STYLES ==================== */
+        
+        .auth-wrapper {
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background-color: #f3f4f6;
+            padding: 20px;
+        }
+
+        .auth-card { 
+            background: #ffffff; 
+            width: 100%; 
+            max-width: 440px; 
+            padding: 2.5rem; 
+            border-radius: 24px; 
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06); 
+            position: relative;
+        }
+
+        /* Back to Home Link */
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .back-home:hover { color: #3b82f6; }
+
+        .auth-logo-section { text-align: center; margin-bottom: 1.5rem; }
+        
+        .auth-card h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+        .subtitle { color: #6b7280; font-size: 0.9rem; margin-bottom: 2rem; text-align: center; }
+
+        /* Form Visibility Logic */
+        .auth-form { display: none; text-align: left; }
+        .auth-form.active { display: block; }
+
+        /* Inputs & Labels */
+        .input-group { margin-bottom: 1.25rem; }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: #374151; }
+        .input-group input { 
+            width: 100%; 
+            padding: 0.85rem 1rem; 
+            border-radius: 12px; 
+            border: 1px solid #d1d5db; 
+            outline: none; 
+            background-color: #f9fafb; 
+            font-size: 1rem;
+            transition: all 0.2s; 
+        }
+        .input-group input:focus { border-color: #3b82f6; background-color: #fff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+
+        /* Buttons */
+        .btn-primary { 
+            width: 100%; 
+            background: #3b82f6; 
+            color: white; 
+            padding: 1rem; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            font-size: 1rem;
+            cursor: pointer; 
+            margin-top: 0.5rem; 
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #2563eb; }
+
+        .link { color: #3b82f6; text-decoration: none; font-weight: 600; cursor: pointer; }
+        .link:hover { text-decoration: underline; }
+
+        /* Google Integration Styling */
+        .divider { display: flex; align-items: center; margin: 1.5rem 0; color: #9ca3af; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e5e7eb; }
+        .divider span { padding: 0 12px; }
+
+        #google-btn-wrapper { display: flex; justify-content: center; margin-top: 0.5rem; }
+
+        .footer-text { margin-top: 2rem; font-size: 0.9rem; color: #4b5563; text-align: center; }
+
+        .about-box {
+            margin-top: 2rem;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.2rem;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="moving-bg" aria-hidden="true">
+        <div class="lane lane-1"></div>
+        <div class="lane lane-2"></div>
+        <div class="lane lane-3"></div>
+    </div>
+
+    <div id="home-view">
+        <nav>
+            <a href="#" class="logo" onclick="switchView('home'); return false;">Web<span>Wizards</span></a>
+            <div class="nav-actions">
+                <a href="#" class="nav-link" onclick="scrollToSection('upcoming-section'); return false;">Explore</a>
+                <a href="#" class="nav-link" onclick="scrollToSection('about-section'); return false;">About</a>
+                <a href="#" class="btn-signin" onclick="switchView('auth'); return false;">Sign In</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <h1>Find your next <br><span>favorite experience.</span></h1>
+            <p>Book tickets for college fests, pop-up shops, and local community events.</p>
+            
+            <div class="search-container">
+                <svg width="20" height="20" style="margin-left: 10px; color: #94a3b8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="mainSearch" placeholder="Search by name, location, or fest type...">
+                <button class="search-btn" id="searchBtn" type="button">Search</button>
+            </div>
+        </header>
+
+        <main class="content-section" id="upcoming-section">
+            <div class="section-header">
+                <div>
+                    <h2 style="font-size: 1.8rem;">Upcoming Events</h2>
+                    <p style="color: var(--text-muted);">Hand-picked local experiences near you</p>
+                </div>
+                <a href="#" class="link" style="color: var(--primary); font-weight: 600; text-decoration: none;">View All →</a>
+            </div>
+
+            <div class="event-grid">
+                <div class="card">
+                    <div class="card-img" style="background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500&q=80') center/cover;">
+                        <span class="badge">COLLEGE FEST</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-date">SAT, OCT 25 • 10:00 AM</p>
+                        <h3 class="card-title">Technovanza 2026</h3>
+                        <p class="card-loc">📍 Central Institute of Tech</p>
+                        <div class="card-footer">
+                            <span class="price">$12.00</span>
+                            <a href="#" class="btn-book" onclick="switchView('auth'); return false;">Book Ticket</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-img" style="background: url('https://images.unsplash.com/photo-1531058021387-46363bb89230?auto=format&fit=crop&w=500&q=80') center/cover;">
+                        <span class="badge">COMMUNITY</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-date">SUN, OCT 26 • 05:00 PM</p>
+                        <h3 class="card-title">Community Food Fair</h3>
+                        <p class="card-loc">📍 Riverside Park</p>
+                        <div class="card-footer">
+                            <span class="price">Free</span>
+                            <a href="#" class="btn-book" onclick="switchView('auth'); return false;">Get Pass</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-img" style="background: url('https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=500&q=80') center/cover;">
+                        <span class="badge">POP-UP</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-date">FRI, OCT 31 • 08:00 PM</p>
+                        <h3 class="card-title">Neon Night Market</h3>
+                        <p class="card-loc">📍 District 5 Studios</p>
+                        <div class="card-footer">
+                            <span class="price">$5.00</span>
+                            <a href="#" class="btn-book" onclick="switchView('auth'); return false;">Book Ticket</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section id="about-section" class="about-box">
+                <h3 style="margin-bottom:8px; color:#1e293b;">About WebWizards</h3>
+                <p>
+                    WebWizards helps students discover and book curated local events.
+                    Sign in, reserve your seat, and receive your digital ticket by email.
+                </p>
+            </section>
+        </main>
+    </div>
+
+    <div id="auth-view" class="auth-wrapper" style="display: none;">
+        <div class="auth-card">
+            <a href="#" class="back-home" onclick="switchView('home'); return false;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to Home
+            </a>
+
+            <div class="auth-logo-section">
+                <div class="logo">Web<span>Wizards</span></div>
+            </div>
+
+            <div id="signin-section" class="auth-form active">
+                <h2>Welcome back</h2>
+                <p class="subtitle">Log in to manage your tickets and events</p>
+                <form id="signin-form">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input id="signin-email" type="email" placeholder="name@company.com" required>
+                    </div>
+                    <div class="input-group">
+                        <div style="display:flex; justify-content:space-between">
+                            <label>Password</label>
+                            <span class="link" style="font-size:0.85rem" onclick="showForm('forgot')">Forgot?</span>
+                        </div>
+                        <input id="signin-password" type="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Sign In</button>
+                </form>
+                <p id="signin-message" style="margin-top:10px; font-size:0.9rem; color:#ef4444; text-align:center;"></p>
+
+                <div class="divider"><span>or continue with</span></div>
+                
+                <div id="google-btn-wrapper">
+                    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+                </div>
+
+                <p class="footer-text">New here? <span class="link" onclick="showForm('signup')">Create an account</span></p>
+            </div>
+
+            <div id="signup-section" class="auth-form">
+                <h2>Join WebWizards</h2>
+                <p class="subtitle">Discover local fests and community events</p>
+                <form id="signup-form">
+                    <div class="input-group"><label>Full Name</label><input id="signup-name" type="text" placeholder="John Doe" required></div>
+                    <div class="input-group"><label>Email Address</label><input id="signup-email" type="email" placeholder="name@company.com" required></div>
+                    <div class="input-group"><label>Password</label><input id="signup-password" type="password" placeholder="Min. 8 characters" required></div>
+                    <button type="submit" class="btn-primary">Create Account</button>
+                </form>
+                <p id="signup-message" style="margin-top:10px; font-size:0.9rem; color:#ef4444; text-align:center;"></p>
+                <p class="footer-text">Already have an account? <span class="link" onclick="showForm('signin')">Sign In</span></p>
+            </div>
+
+            <div id="forgot-section" class="auth-form">
+                <h2>Reset Password</h2>
+                <p class="subtitle">We'll send an OTP to your email or phone</p>
+                <form id="forgot-form">
+                    <div class="input-group">
+                        <label>Email or Mobile Number</label>
+                        <input id="forgot-contact" type="text" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Reset Token</label>
+                        <input id="forgot-token" type="text" placeholder="Paste reset token from email">
+                    </div>
+                    <div class="input-group">
+                        <label>New Password</label>
+                        <input id="forgot-new-password" type="password" placeholder="Enter new password">
+                    </div>
+                    <button type="submit" class="btn-primary">Send Reset Link</button>
+                </form>
+                <p id="forgot-message" style="margin-top:10px; font-size:0.9rem; color:#ef4444; text-align:center;"></p>
+                <p class="footer-text"><span class="link" onclick="showForm('signin')">Back to Sign In</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="g_id_onload"
+         data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+
+    <script>
+        // Page View Switching Logic
+        function switchView(viewName) {
+            const homeView = document.getElementById('home-view');
+            const authView = document.getElementById('auth-view');
+
+            if (viewName === 'auth') {
+                homeView.style.display = 'none';
+                authView.style.display = 'flex'; // Use flex to maintain centering
+                showForm('signin'); // Reset to login form when opening auth
+            } else {
+                authView.style.display = 'none';
+                homeView.style.display = 'block';
+            }
+            window.scrollTo(0, 0); // Scroll to top on view change
+        }
+
+        // Search Filter Logic
+        document.getElementById('mainSearch').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                let title = card.querySelector('.card-title').innerText.toLowerCase();
+                let loc = card.querySelector('.card-loc').innerText.toLowerCase();
+                if(title.includes(filter) || loc.includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+
+        // Auth Forms Switching Logic
+        function showForm(formId) {
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(formId + '-section').classList.add('active');
+        }
+
+        // Handle Google Login Response
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            alert("Success! Google login token received.");
+        }
+
+        // Step 1: Connect Sign In form to backend API.
+        const API_BASE = "http://localhost:5000/api";
+        const signinForm = document.getElementById("signin-form");
+        const signupForm = document.getElementById("signup-form");
+        const forgotForm = document.getElementById("forgot-form");
+        const signinMessage = document.getElementById("signin-message");
+        const signupMessage = document.getElementById("signup-message");
+        const forgotMessage = document.getElementById("forgot-message");
+
+        const parseApiError = async (response, fallback) => {
+            try {
+                const data = await response.json();
+                return data.message || fallback;
+            } catch (e) {
+                return fallback;
+            }
+        };
+
+        if (signinForm) {
+            signinForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+                signinMessage.style.color = "#ef4444";
+                signinMessage.textContent = "";
+
+                const email = document.getElementById("signin-email").value.trim();
+                const password = document.getElementById("signin-password").value.trim();
+
+                try {
+                    const response = await fetch(`${API_BASE}/auth/login`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(await parseApiError(response, "Login failed"));
+                    }
+
+                    const data = await response.json();
+                    localStorage.setItem("ticket_booking_token", data.token);
+                    window.location.href = "./booking.html";
+                } catch (error) {
+                    signinMessage.textContent = error.message.includes("fetch")
+                        ? "Cannot reach server. Run node server.js and open http://localhost:5000"
+                        : error.message;
+                }
+            });
+        }
+
+        if (signupForm) {
+            signupForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+                signupMessage.style.color = "#ef4444";
+                signupMessage.textContent = "";
+
+                const email = document.getElementById("signup-email").value.trim();
+                const password = document.getElementById("signup-password").value.trim();
+
+                try {
+                    const response = await fetch(`${API_BASE}/auth/register`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(await parseApiError(response, "Registration failed"));
+                    }
+
+                    signupMessage.style.color = "#16a34a";
+                    signupMessage.textContent = "Account created. You can sign in now.";
+                    signupForm.reset();
+                    showForm("signin");
+                    signupMessage.style.color = "#16a34a";
+                    signinMessage.style.color = "#16a34a";
+                    signinMessage.textContent = "Registration successful. Please sign in.";
+                } catch (error) {
+                    signupMessage.textContent = error.message.includes("fetch")
+                        ? "Cannot reach server. Run node server.js and open http://localhost:5000"
+                        : error.message;
+                }
+            });
+        }
+
+        if (forgotForm) {
+            forgotForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+                forgotMessage.style.color = "#ef4444";
+                forgotMessage.textContent = "";
+
+                const email = document.getElementById("forgot-contact").value.trim();
+                const token = document.getElementById("forgot-token").value.trim();
+                const newPassword = document.getElementById("forgot-new-password").value.trim();
+
+                try {
+                    // Step A: Request reset token (only email entered)
+                    if (!token || !newPassword) {
+                        const response = await fetch(`${API_BASE}/auth/forgot-password`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email })
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(await parseApiError(response, "Failed to request reset token"));
+                        }
+
+                        const data = await response.json();
+                        forgotMessage.style.color = "#16a34a";
+                        forgotMessage.textContent = "Token sent to email. Paste token + new password, then submit again.";
+                        if (data.emailPreview) {
+                            forgotMessage.textContent += ` Preview: ${data.emailPreview}`;
+                        }
+                        return;
+                    }
+
+                    // Step B: Reset password (email + token + new password)
+                    const response = await fetch(`${API_BASE}/auth/reset-password`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, token, newPassword })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(await parseApiError(response, "Failed to reset password"));
+                    }
+
+                    forgotMessage.style.color = "#16a34a";
+                    forgotMessage.textContent = "Password reset successful. Please sign in.";
+                    forgotForm.reset();
+                    showForm("signin");
+                } catch (error) {
+                    forgotMessage.textContent = error.message.includes("fetch")
+                        ? "Cannot reach server. Run node server.js and open http://localhost:5000"
+                        : error.message;
+                }
+            });
+        }
+
+        // Search button uses same filter action as keyup.
+        const runSearch = () => {
+            let filter = document.getElementById('mainSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                let title = card.querySelector('.card-title').innerText.toLowerCase();
+                let loc = card.querySelector('.card-loc').innerText.toLowerCase();
+                card.style.display = (title.includes(filter) || loc.includes(filter)) ? "" : "none";
+            });
+        };
+        document.getElementById('mainSearch').addEventListener('keyup', runSearch);
+        document.getElementById('searchBtn').addEventListener('click', runSearch);
+
+        // Smooth scroll for nav links.
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        // Google login callback: decode profile and prefill signup.
+        function decodeJwtPayload(token) {
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const json = decodeURIComponent(atob(base64).split("").map(function(c) {
+                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(""));
+            return JSON.parse(json);
+        }
+        window.handleCredentialResponse = function(response) {
+            try {
+                const payload = decodeJwtPayload(response.credential);
+                showForm("signup");
+                document.getElementById("signup-name").value = payload.name || "";
+                document.getElementById("signup-email").value = payload.email || "";
+                signupMessage.style.color = "#16a34a";
+                signupMessage.textContent = "Google profile loaded. Set password and click Create Account.";
+            } catch (e) {
+                alert("Google login response received, but profile parsing failed.");
+            }
+        };
+    </script>
+</body>
+</html>

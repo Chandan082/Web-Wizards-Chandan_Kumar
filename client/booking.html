@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Book Ticket</h1>
+      <form id="bookingForm">
+        <label for="name">Name</label>
+        <input id="name" type="text" required />
+
+        <label for="college">College</label>
+        <input id="college" type="text" required />
+
+        <label for="aadharNumber">Aadhar Number</label>
+        <input id="aadharNumber" type="text" minlength="12" maxlength="12" required />
+
+        <button type="submit">Continue To Seat Selection</button>
+      </form>
+
+      <div class="actions">
+        <button id="exportBtn" type="button">Export Bookings (CSV)</button>
+        <button id="logoutBtn" type="button">Logout</button>
+      </div>
+
+      <p id="result">Fill details and continue to choose your seat.</p>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+  </html>

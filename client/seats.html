@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select Seat</title>
+    <style>
+      * { box-sizing: border-box; font-family: Arial, sans-serif; }
+      body { margin: 0; background: #f5f7fb; padding: 24px; }
+      .wrap { max-width: 900px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+      h1 { margin-top: 0; }
+      .legend { display: flex; gap: 12px; margin-bottom: 12px; }
+      .dot { width: 14px; height: 14px; border-radius: 4px; display: inline-block; margin-right: 6px; }
+      .seat-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; }
+      .seat { border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 0; text-align: center; background: #fff; cursor: pointer; }
+      .seat.booked { background: #e2e8f0; color: #64748b; cursor: not-allowed; }
+      .seat.selected { background: #2563eb; color: #fff; border-color: #1d4ed8; }
+      .actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+      button { background: #2563eb; color: #fff; border: 0; border-radius: 8px; padding: 10px 14px; cursor: pointer; }
+      button.secondary { background: #475569; }
+      #seat-message { margin-top: 12px; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Select Your Seat</h1>
+      <p id="booking-summary"></p>
+      <div class="legend">
+        <span><span class="dot" style="background:#ffffff; border:1px solid #cbd5e1;"></span>Available</span>
+        <span><span class="dot" style="background:#2563eb;"></span>Selected</span>
+        <span><span class="dot" style="background:#e2e8f0;"></span>Booked</span>
+      </div>
+      <div id="seat-grid" class="seat-grid"></div>
+      <div class="actions">
+        <button id="confirmSeatBtn" type="button">Confirm Booking</button>
+        <button id="backBtn" type="button" class="secondary">Back</button>
+        <button id="logoutBtn" type="button" class="secondary">Logout</button>
+      </div>
+      <p id="seat-message"></p>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+  </html>
