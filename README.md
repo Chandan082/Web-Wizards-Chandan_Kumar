@@ -2,24 +2,28 @@
 Team Name
 Web Wizards
 Project Name
-[Your Project Name]
+Hyper_Local Event Ticketing Startup
 
 Selected Track
-[Track Name – e.g., AI/ML, Web3, Healthcare, Sustainability, etc.]
+Web Development
 
 Selected Problem Statement (PS)
-[Problem Statement ID / Title]
+Hyper_Local Event Ticketing Startup
 
 Team Leader
 Name:Chandan Kumar Phone: 6200207219
 
-Team Members & Roles Name Role [Member 1 Name] [Role – e.g., Frontend Developer] [Member 2 Name] [Role – Backend Developer] [Member 3 Name] [Role – AI/ML Engineer]
+Team Members & Roles:
+Name Role
+[Chandan Kumar] [Backend Developer] 
+[Ashutosh Singh Yadav] [Frontend Developer]
+[Ratnesh Kumar Jha] []
+[Aayush Sharma] []
 
 Project Description
+To develop a web platform for finding, booking tickets to, and managing attendance at nearby college feasts,pop-ups, and community events.
 
-[Write your project description here. Use this structure for best impact:]
-
-Problem: Briefly explain the real-world problem you are solving. Solution: Describe your approach and how your project solves it. Key Features: Feature 1 Feature 2 Feature 3 Tech Stack: (e.g., React, Node.js, Python, TensorFlow, MongoDB, etc.) Impact: Explain how your project helps users / society.
+Problem: Briefly explain the real-world problem you are solving. Solution: Describe your approach and how your project solves it. Key Features: Feature 1 Feature 2 Feature 3 Tech Stack: (e.g., React, Node.js, Python, TensorFlow, MongoDB, hoppscotch, MongoDB Compass) Impact: Help reduce last minute chaos and smooth filling of seats.
 
 🔗 Additional Links (Optional)
 
