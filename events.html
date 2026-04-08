@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events | Hyperlocal Events</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="events">
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="./home.html">Hyperlocal Events</a>
+        <nav class="nav">
+          <button id="logoutBtn" class="btn btn--ghost" type="button">Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h1>Nearby events</h1>
+        <p class="muted">Pick an event to book tickets.</p>
+        <div id="message" class="alert" hidden></div>
+      </section>
+
+      <section id="eventsGrid" class="grid"></section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+

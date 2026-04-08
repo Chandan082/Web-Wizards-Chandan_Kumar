@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Tickets | Hyperlocal Events</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="booking">
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="./home.html">Hyperlocal Events</a>
+        <nav class="nav">
+          <a href="./events.html">Back to events</a>
+          <button id="logoutBtn" class="btn btn--ghost" type="button">Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container narrow">
+      <section class="card">
+        <h1>Book your seat</h1>
+        <p id="eventMeta" class="muted"></p>
+
+        <div id="message" class="alert" hidden></div>
+
+        <form id="bookingForm" class="form">
+          <label class="field">
+            <span>Ticket price</span>
+            <select id="priceSelect" name="price" required></select>
+          </label>
+
+          <label class="field">
+            <span>Seat number</span>
+            <input id="seatInput" name="seatNumber" type="number" min="1" step="1" required />
+            <small id="seatHint" class="muted"></small>
+          </label>
+
+          <button class="btn" type="submit">Confirm booking</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+

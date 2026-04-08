@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | Hyperlocal Events</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="register">
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="./home.html">Hyperlocal Events</a>
+        <nav class="nav">
+          <a href="./login.html">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container narrow">
+      <section class="card">
+        <h1>Create account</h1>
+        <p class="muted">Register with email and password.</p>
+
+        <div id="message" class="alert" hidden></div>
+
+        <form id="registerForm" class="form">
+          <label class="field">
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+
+          <label class="field">
+            <span>Password</span>
+            <input name="password" type="password" autocomplete="new-password" minlength="6" required />
+          </label>
+
+          <button class="btn" type="submit">Register</button>
+        </form>
+
+        <p class="muted">
+          Already have an account? <a href="./login.html">Login</a>.
+        </p>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+
