@@ -18,7 +18,7 @@ Name Role
 [Chandan Kumar] [Backend Developer] 
 [Ashutosh Singh Yadav] [Frontend Developer]
 [Ratnesh Kumar Jha] []
-[Aayush Sharma] []
+[Aayush Sharma] [Full Stack developer]
 
 Project Description
 To develop a web platform for finding, booking tickets to, and managing attendance at nearby college feasts,pop-ups, and community events.
